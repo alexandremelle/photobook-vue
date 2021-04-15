@@ -2,7 +2,7 @@ import { createAlbum as createAlbumMutation } from "@/graphql/mutations";
 import { getAlbum as getAlbumQuery } from "@/graphql/queries";
 import { listAlbums as listAlbumsQuery } from "@/graphql/queries";
 import { createPhoto as createPhotoMutation } from "@/graphql/mutations";
-import API, { graphqlOperation, Storage } from "@aws-amplify/api";
+import { API, graphqlOperation, Storage } from "aws-amplify";
 import { uuid } from "uuidv4";
 import awsconfig from "@/aws-exports";
 
@@ -20,6 +20,7 @@ export const albumInfo = {
         await API.graphql(
           graphqlOperation(createAlbumMutation, { input: newAlbum })
         );
+
         dispatch("getAlbumsData");
       } catch (error) {
         console.error("createalbum", error);
@@ -31,33 +32,34 @@ export const albumInfo = {
       );
     },
     async getAlbumsData({ commit }) {
-      const albumData = await API.graphql(graphqlOperation(listAlbumsQuery));
-      commit("setAlbums", albumData.data.listAlbums.items);
+      const albumsData = await API.graphql(graphqlOperation(listAlbumsQuery));
+      commit("setAlbums", albumsData.data.listAlbums.items);
     },
     async createPhoto(_, data) {
       const {
         aws_user_files_s3_bucket_region: region,
         aws_user_files_s3_bucket: bucket,
       } = awsconfig;
-      const { file, type: mimetype, id } = data;
-      const extension = file.name.substr(file.name.lastIndexOf("." + 1));
+      const { file, type: mimeType, id } = data;
+      const extension = file.name.substr(file.name.lastIndexOf(".") + 1);
       const photoId = uuid();
       const key = `images/${photoId}.${extension}`;
       const inputData = {
         id: photoId,
         photoAlbumId: id,
-        contentType: mimetype,
+        contentType: mimeType,
         fullsize: {
           key,
           region,
           bucket,
         },
       };
-      // S3 bucket storage add file to it
+
+      //s3 bucket storage add file to it
       try {
         await Storage.put(key, file, {
           level: "protected",
-          contentType: mimetype,
+          contentType: mimeType,
           metadata: { albumId: id, photoId },
         });
         await API.graphql(
@@ -65,7 +67,7 @@ export const albumInfo = {
         );
         return Promise.resolve("success");
       } catch (error) {
-        console.error("createPhoto error", error);
+        console.log("createPhoto error", error);
         return Promise.reject(error);
       }
     },
