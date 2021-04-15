@@ -1,18 +1,20 @@
 <template>
   <div>
-    <h3 class="text-3xl">Create or choose an album</h3>
+    <h3 class="text-3xl">Créez ou sélectionnez un album</h3>
     <div class="flex flex-col m-auto w-64">
       <input
         class="my-4 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-        placeholder="Album name..."
+        placeholder="Nom de l'album..."
         type="text"
         v-model="albumName"
       />
-      <button class="btn-blue mb-4" @click="createAlbum()">Create album</button>
+      <button class="btn-blue mb-4" @click="createAlbum()">
+        Créer l'album
+      </button>
     </div>
     <div class="text-red-500">{{ error }}</div>
     <hr />
-    <h5 class="mt-4 text-2xl">List of albums</h5>
+    <h5 class="mt-4 text-2xl">Vos albums</h5>
     <div class="flex flex-wrap w-full m-auto justify-center">
       <div
         v-for="(album, idx) in albums"
@@ -40,7 +42,7 @@ export default {
     async createAlbum() {
       this.error = "";
       if (!this.albumName) {
-        this.error = "Please enter an album name";
+        this.error = "Merci d'entrer un nom pour votre album";
         return;
       }
       const newAlbum = {

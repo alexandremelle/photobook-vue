@@ -7,7 +7,7 @@
     >
       <div class="flex flex-col user">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="userName"
-          >User Name</label
+          >Nom d'utilisateur</label
         >
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -18,7 +18,7 @@
       </div>
       <div class="flex flex-col mt-2">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="password"
-          >Password</label
+          >Mot de passe</label
         >
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -39,11 +39,11 @@
         />
       </div>
       <!-- eslint-disable -->
-      <button class="btn-blue">Sign Up</button>
+      <button class="btn-blue">Créer un compte</button>
     </form>
     <div v-if="error" class="text-red-600">{{ error.message }}</div>
     <div v-if="confirmPassword" class="w-4/12 m-auto">
-      <h3>Enter your code. Please check your email</h3>
+      <h3>Entrez le code de validation que vous avez reçu par mail 😉</h3>
       <div class="flex flex-col mt-2">
         <label class="block text-gray-700 text-sm font-bold" for="password">Code</label>
         <input
@@ -51,7 +51,7 @@
           type="text"
           v-model="code"
         />
-        <button class="btn-blue" @click="confirmSignUp">Confirm Code</button>
+        <button class="btn-blue" @click="confirmSignUp">Confirmer le code</button>
       </div>
     </div>
   </div>
